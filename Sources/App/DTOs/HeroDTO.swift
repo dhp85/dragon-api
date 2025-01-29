@@ -21,3 +21,9 @@ extension Hero {
         Public(id: self.id!, name: self.name)
     }
 }
+
+extension Hero.Create: Validatable {
+    static func validations(_ validations: inout Validations) {
+        validations.add("name", as: String.self, is: .count(2...50), required: true)
+    }
+}

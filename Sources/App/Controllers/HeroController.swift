@@ -9,6 +9,9 @@ struct HeroController: RouteCollection {
             
             builder.get(use: getHeroes)
             builder.post(use: createHero)
+            
+            builder.get(":heroId", use: getHero)
+            builder.delete(":heroId", use: deleteHero)
         }
     }
 }
@@ -24,8 +27,19 @@ extension HeroController {
     }
     
     @Sendable
+    func getHero(req: Request) async throws -> Hero.Public {
+        guard let hero = try await Hero.find(req.parameters.get("heroId"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        return hero.toPublic()
+    }
+    
+    @Sendable
     func createHero(_ req: Request) async throws -> HTTPStatus {
-        // create es el objeto que me contruyo de la request al DTO
+        //se usa validate(content:req) para asegurarse de que los datos enviados en la peticion cumplen con las reglas
+        // definidas en Hero.Create
+        try Hero.Create.validate(content: req)
+        // create es el objeto que me contruye de la request al DTO. es una decodificacion 
         let create = try req.content.decode(Hero.Create.self)
         //se convierte el DTO Hero.Create en un modelo de base de datos.
         let hero = create.toModel()
@@ -34,4 +48,15 @@ extension HeroController {
         
         return HTTPResponseStatus.ok
     }
+    
+    @Sendable
+    func deleteHero(_ req: Request) async throws -> HTTPStatus {
+        guard let hero = try await Hero.find(req.parameters.get("heroId"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        try await hero.delete(on: req.db)
+        
+        return .ok
+    }
+    
 }

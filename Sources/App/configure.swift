@@ -12,7 +12,7 @@ public func configure(_ app: Application) async throws {
 
     // se añaden las migraciones de la carpeta Migrations.
     app.migrations.add(HeroMigration())
-    
+    app.migrations.add(HeroDataMigration())
     try await app.autoMigrate()
     // register routes
     try routes(app)
