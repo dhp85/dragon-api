@@ -46,6 +46,8 @@ extension HeroController {
         // guarda  el heroe en la base de datos
         try await hero.create(on: req.db)
         
+        req.logger.info("Hero \(create.name) created.")
+        
         return HTTPResponseStatus.ok
     }
     
