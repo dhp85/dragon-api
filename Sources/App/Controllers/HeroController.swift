@@ -1,4 +1,5 @@
 import Vapor
+import Fluent
 
 
 // para definir las rutas en el controlador hay que poner el protocolo RouteCollection.
@@ -19,11 +20,22 @@ struct HeroController: RouteCollection {
 extension HeroController {
     
     @Sendable
-    func getHeroes(_ req: Request) async throws -> [Hero.Public] {
-        // es una request a la base de datos coger todos los registros y mapearlos al modelo publico para devolverselo al usuario.
-        try await Hero.query(on: req.db)
-            .all()
-            .map { $0.toPublic() }
+    func getHeroes(_ req: Request) async throws -> Page<Hero.Public> {
+        var heroesPage: Page<Hero>
+        if let search = try? req.query.get(String.self, at: "search") {
+            heroesPage = try await Hero
+                .query(on: req.db)
+                .filter(\.$name =~ search)
+                .sort(\.$name)
+                .paginate(for: req)
+        } else {
+            heroesPage = try await Hero
+                .query(on: req.db)
+                .sort(\.$name)
+                .paginate(for: req)
+        }
+        let mappedHeroes = heroesPage.items.map { $0.toPublic() }
+        return Page(items: mappedHeroes, metadata: heroesPage.metadata)
     }
     
     @Sendable

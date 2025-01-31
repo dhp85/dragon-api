@@ -11,6 +11,8 @@ func routes(_ app: Application) throws {
     try app.group("api") { builder in
         try builder.group(ApiKeyMiddleware()) { builder in
             try builder.register(collection: HeroController())
+            try builder.register(collection: EpisodesController())
+            
         }
     }
 }
