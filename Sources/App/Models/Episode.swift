@@ -5,10 +5,10 @@ import Fluent
 final class Episodes: Model, @unchecked Sendable {
     static let schema = "episodes"
     
-    @ID(key: .id)
+    @ID(key: .id) // @ID define la clave primaria.
     var id: UUID?
     
-    @Field(key: "title")
+    @Field(key: "title") // Mapea la columna "title" en la BD.
     var title: String
     
     @Field(key: "summary")
@@ -18,27 +18,28 @@ final class Episodes: Model, @unchecked Sendable {
     var episodeNumber: Int
     
    /* @Field(key: "characters")
-    var characters: [Hero]
+    var characters: [Hero]*/
     
-    @Field(key: "protagonist")
-    var protagonist: Hero*/
+    @Parent(key: "protagonist_id") // Relacion con la clase Hero.
+    var protagonist: Hero
     
     @Timestamp(key: "aired_at", on: .none)
     var airedAt: Date?
     
-    @Timestamp(key: "create_at", on: .create)
+    @Timestamp(key: "create_at", on: .create) // marca la fecha de creacion.
     var createAt: Date?
     
-    @OptionalField(key: "image_url")
+    @OptionalField(key: "image_url") // campo opcional, en la migracion asegurarse de que no sea .required al ser opcional.
     var imageUrl: String?
     
     init() {}
     
-    init(episodeNumber: Int, title: String, airedAt: Date? = nil, summary: String, imageUrl: String? = nil) {
+    init(episodeNumber: Int, title: String, airedAt: Date? = nil, summary: String, imageUrl: String? = nil, protagonistID: Hero.IDValue) {
         self.episodeNumber = episodeNumber
         self.title = title
         self.airedAt = airedAt
         self.summary = summary
         self.imageUrl = imageUrl
+        self.$protagonist.id = protagonistID
     }
 }
