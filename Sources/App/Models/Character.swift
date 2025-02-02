@@ -28,6 +28,8 @@ final class Hero: Model, @unchecked Sendable {
     @Field(key: "name")
     var name: String
     
+    @Siblings(through: EpisodeHeroPivot.self, from: \.$hero, to: \.$episode)
+    var episodes: [Episodes]
     // se crea un inicializador vacio por si el usuario utiliza un post y crea un modelo nuevo.
     init() {}
     

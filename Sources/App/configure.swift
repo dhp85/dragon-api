@@ -36,8 +36,10 @@ public func configure(_ app: Application) async throws {
     
 
     // se añaden las migraciones de la carpeta Migrations.
+    app.migrations.add(UserMigration())
     app.migrations.add(HeroMigration())
     app.migrations.add(EpisodeMigration())
+    app.migrations.add(EpisodeHeroPivotMigration())
     app.migrations.add(PopulateInitialData())
     
     try await app.autoMigrate()

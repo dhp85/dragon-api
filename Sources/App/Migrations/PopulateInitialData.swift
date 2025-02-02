@@ -85,6 +85,11 @@ struct PopulateInitialData: AsyncMigration {
                        }
                    }
                }
+        try await episode195.$characters.attach([chiChi,goku,freezer,raditz,gohan,piccolo], on: database)
+        try await episode196.$characters.attach([piccolo], on: database)
+        try await episode197.$characters.attach([freezer,raditz,gohan,piccolo], on: database)
+        try await episode198.$characters.attach([raditz,gohan,piccolo], on: database)
+        try await episode199.$characters.attach([gohan,piccolo], on: database)
     }
     func revert(on database: Database) async throws {
         try await Hero.query(on: database).delete()

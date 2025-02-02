@@ -28,6 +28,7 @@ extension EpisodesController {
         
         // cuando es un @Parent, para hacer referencia hay que poner $ y hacer la carga, si no nos dara fallo el servidor si se hace una request con el id del protagonista.
         try await episode.$protagonist.load(on: req.db)
+        try await episode.$characters.load(on: req.db)
         
         return episode.toPublic()
     }

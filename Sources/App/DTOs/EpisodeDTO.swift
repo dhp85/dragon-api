@@ -30,6 +30,7 @@ extension Episodes {
         let summary: String
         let imageUrl: String?
         let protagonist: Hero.Public
+        let characters: [Hero.Public]
     }
     
     func toPublic() -> Public {
@@ -40,7 +41,8 @@ extension Episodes {
             airedAt: self.airedAt ?? Date(),
             summary: self.summary,
             imageUrl: self.imageUrl,
-            protagonist: protagonist.toPublic()
+            protagonist: protagonist.toPublic(),
+            characters: characters.map {$0.toPublic()}
         )
     }
 }
