@@ -13,8 +13,11 @@ func routes(_ app: Application) throws {
         try builder.register(collection: AuthController())
         
         try builder.group(JWTToken.authenticator(), JWTToken.guardMiddleware()) { builder in
+            try builder.register(collection: UserController())
             try builder.register(collection: HeroController())
             try builder.register(collection: EpisodesController())
+            try builder.register(collection: WebSocketController())
+            
             
         }
     }
