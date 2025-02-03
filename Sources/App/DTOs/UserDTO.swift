@@ -12,8 +12,8 @@ extension User {
         let password: String  // Contraseña del usuario
         
         // Método que convierte un `Create` en un objeto `User`
-        func toPublic() -> User {
-            User(username: name, email: email, password: password)
+        func toModel(withHashedPassword hashedPassword: String) -> User {
+            User(username: name, email: email, password: hashedPassword)
         }
     }
     

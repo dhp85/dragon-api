@@ -9,7 +9,10 @@ func routes(_ app: Application) throws {
     //Resumiendo esto es la ruta donde formalizar una request. Por ejemplo: "https: // https://gateway.marvel.com/api
     // la web o url es https://gateway.marvel.com/ y el grupo es api.
     try app.group("api") { builder in
-        try builder.group(ApiKeyMiddleware()) { builder in
+        
+        try builder.register(collection: AuthController())
+        
+        try builder.group(JWTToken.authenticator(), JWTToken.guardMiddleware()) { builder in
             try builder.register(collection: HeroController())
             try builder.register(collection: EpisodesController())
             
