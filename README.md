@@ -8,7 +8,7 @@ Vapor es un framework en Swift para el desarrollo de aplicaciones backend. Nos p
 
 ## 🚀 Desarrollo Server-Side
 
-Para construir nuestro backend utilizaremos las siguientes herramientas:
+Para construir el backend utilizo las siguientes herramientas:
 
 - **Swift**: Lenguaje principal del desarrollo.
 - **Vapor**: Framework para desarrollo web en Swift.
